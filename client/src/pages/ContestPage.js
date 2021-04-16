@@ -8,8 +8,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
 import parsePhoneNumber from 'libphonenumber-js'
-import InputAdornment from "@material-ui/core/InputAdornment";
 import Flag from 'react-world-flags'
+import {toast} from "react-toastify";
 
 
 const ContestPage = () => {
@@ -26,8 +26,11 @@ const ContestPage = () => {
 
     const getData = async (id) => {
         const res = await axios.get('/api/contest/' + id)
-        if (res.status !== 200) return
-        setInfo(res.data)
+        if (res.status !== 200) {
+            toast.error(res.data)
+        } else {
+            setInfo(res.data)
+        }
     }
 
     useEffect(() => {
@@ -39,11 +42,11 @@ const ContestPage = () => {
         if (selectors.type === 'phone') {
             if (!(/^[\d,+]*$/).test(value)) return
             const number = parsePhoneNumber(value)
-            let saveBtnAdd =  {
+            let saveBtnAdd = {
                 text: 'Добавить участника',
                 color: 'primary'
             }
-            if (!number){
+            if (!number) {
                 saveBtnAdd = {
                     text: 'Введите корректный номер',
                     color: 'secondary'
@@ -51,7 +54,6 @@ const ContestPage = () => {
             }
             setBtnAdd(saveBtnAdd)
             setNumber(number)
-
         }
         setInput(value)
     }
@@ -61,7 +63,7 @@ const ContestPage = () => {
             case 'prize':
                 break;
             case 'type':
-                let saveBtnAdd =  {
+                let saveBtnAdd = {
                     text: 'Добавить участника',
                     color: 'primary'
                 }
@@ -77,10 +79,26 @@ const ContestPage = () => {
             type: selectors.type,
             prizeId: selectors.prize
         })
-        if (res.status !== 200) return
-        const temp = info
-        info.infos.unshift(res.data)
-        setInfo({...temp})
+        if (res.status !== 200) {
+            toast.error(res.data)
+        } else {
+            const temp = info
+            temp.infos.unshift(res.data)
+            setInfo({...temp})
+            toast('Запись добавлена')
+        }
+    }
+
+    const delInfo = async (id) => {
+        const res = await axios.put('/api/contest/' + info._id +'/'+id)
+        if (res.status !== 200){
+            toast.error(res.data)
+        } else {
+            const temp = info
+            temp.infos = temp.infos.filter((item)=>item._id !== id)
+            setInfo({...temp})
+            toast('Запись удалена')
+        }
     }
 
     if (!info) return <div className='container text-center'><CircularProgress/></div>
@@ -109,12 +127,14 @@ const ContestPage = () => {
                                    label='Добавить' name='name' placeholder='Добавить участника'
                                    InputProps={{
                                        startAdornment: ((selectors.type === 'phone') && number) &&
-                                           <Flag code={number.country} height={20}  fallback={<span>?!</span>}/>,
+                                           <Flag code={number.country} height={20} fallback={<span>?!</span>}/>,
                                    }}
                         />
                     </div>
                     <Button className='row-12 mb-5 w-100' variant="contained"
-                            color={btnAdd.color} type='submit'>
+                            color={btnAdd.color} type='submit'
+                            disabled={!selectors.type || !selectors.prize || ((selectors.type === 'phone') && !number)}
+                    >
                         {btnAdd.text}
                     </Button>
                 </form>
@@ -142,7 +162,8 @@ const ContestPage = () => {
                                     <div className='col-12 mb-3 border-bottom' key={idx}>
                                         <div className='row'>
                                             <div className='col-10'>{item.type}: {item.data}</div>
-                                            {/*<Button className='col-2' color='secondary'>Удалить</Button>*/}
+                                            <Button className='col-2' color='secondary'
+                                                    onClick={() => delInfo(item._id)}>Удалить</Button>
                                         </div>
                                     </div>
                                 )

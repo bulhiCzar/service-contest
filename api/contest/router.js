@@ -10,7 +10,7 @@ router.get(
 
             res.json(data)
         } catch (e) {
-            res.json('bad')
+            res.json('Ошибка, зовите программиста')
         }
     }
 )
@@ -50,7 +50,7 @@ router.post(
 
             res.json(resData)
         } catch (e) {
-            res.json('bad')
+            res.json('Ошибка, зовите программиста')
         }
     }
 )
@@ -72,7 +72,7 @@ router.get(
 
             res.json(contest)
         } catch (e) {
-            res.json('bad')
+            res.json('Ошибка, зовите программиста')
         }
     }
 )
@@ -83,6 +83,14 @@ router.post(
         try {
             const {id} = req.params
             const {data, type, prizeId} = req.body
+
+            const checkDub = await models.Info.findOne({
+                data,
+                contestId: id,
+            })
+            if (checkDub){
+                return res.status(202).json('Такая запись уже существует!')
+            }
 
             const info = new models.Info({
                 data,
@@ -100,7 +108,23 @@ router.post(
             res.json(info)
         } catch (e) {
             console.log(e)
-            res.json('bad')
+            res.json('Ошибка, зовите программиста')
+        }
+    }
+)
+
+router.put(
+    '/:contestId/:infoId',
+    async (req, res) => {
+        try {
+            const {contestId, infoId} = req.params
+
+            await models.Info.findByIdAndRemove(infoId)
+
+            res.json('ok')
+        } catch (e) {
+            console.log(e)
+            res.json('Ошибка, зовите программиста')
         }
     }
 )
