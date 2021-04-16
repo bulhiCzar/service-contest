@@ -1,0 +1,13 @@
+.App {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.btn{
+  padding: 12px 24px;
+  background-color: silver;
+}
+
+.pointer{
+  cursor: pointer;
+}
