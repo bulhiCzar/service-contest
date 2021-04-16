@@ -110,7 +110,7 @@ const ContestPage = () => {
             <div>
                 <form onSubmit={submit}>
                     <div className='row mb-2 mt-4'>
-                        <div className='col-2'>
+                        <div className='col-xl-2 col-md-12 '>
                             <InputLabel id="toPrize">Тип информации</InputLabel>
                             <Select
                                 className='w-100'
@@ -123,7 +123,7 @@ const ContestPage = () => {
                                 <MenuItem value='any'>Другое</MenuItem>
                             </Select>
                         </div>
-                        <TextField className='col-10' value={input} onChange={handlerInput}
+                        <TextField className='col-xl-10 col-md-12 w-md-100' value={input} onChange={handlerInput}
                                    label='Добавить' name='name' placeholder='Добавить участника'
                                    InputProps={{
                                        startAdornment: ((selectors.type === 'phone') && number) &&
@@ -138,7 +138,9 @@ const ContestPage = () => {
                         {btnAdd.text}
                     </Button>
                 </form>
-
+                {   (!selectors.type || !selectors.prize) &&
+                    <div className='row mx-auto mb-5 text-danger'>Выберите тип информации и приз</div>
+                }
                 <div className='row'>
                     <div className='col-12'>
                         <InputLabel id="toPrize">Приз</InputLabel>
@@ -161,8 +163,8 @@ const ContestPage = () => {
                                 return (
                                     <div className='col-12 mb-3 border-bottom' key={idx}>
                                         <div className='row'>
-                                            <div className='col-10'>{item.type}: {item.data}</div>
-                                            <Button className='col-2' color='secondary'
+                                            <div className='col-xl-10 col-md-12'>{item.type}: {item.data}</div>
+                                            <Button className='col-xl-2 col-md-12' color='secondary'
                                                     onClick={() => delInfo(item._id)}>Удалить</Button>
                                         </div>
                                     </div>

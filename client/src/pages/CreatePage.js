@@ -44,14 +44,14 @@ const CreatePage = () => {
             <div className='row mb-2'>
                 <TextField label='Название' name='name' value={inputs.name} onChange={handlerInput}/>
                 <TextField label="Проект" name='project' value={inputs.project} onChange={handlerInput}/>
-                <TextField label="Вознаграждение" name='prize' value={inputs.prize} onChange={handlerInput}
+                <TextField label="Приз" name='prize' value={inputs.prize} onChange={handlerInput}
                            placeholder='Например: 1000 долей'/>
-                <Button className='mt-3 mb-4' variant="contained" color="primary" onClick={addPrize}>Добавить</Button>
+                <Button className='mt-3 mb-4' variant="contained" color="primary" onClick={addPrize}>Добавить приз</Button>
 
                 {prizes.map((item, idx) => (
-                    <div className='row mb-1' key={idx}>
-                        <div className='col-10'>{item}</div>
-                        <Button className='col-2' variant="contained" color='secondary'
+                    <div className='row-md-12 mb-2 border-bottom w-100' key={idx}>
+                        <div className='col-xl-10 col-md-12 w-100'>{item}</div>
+                        <Button className='col-xl-2 col-md-12 w-100' color='secondary'
                                 onClick={() => delPrize(idx)}>Удалить</Button>
                     </div>
                 ))}

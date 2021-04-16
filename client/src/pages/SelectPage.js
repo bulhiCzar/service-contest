@@ -23,7 +23,7 @@ const SelectPage = () => {
                     !contests.length ? 'Еще нет конкурсов' :
                         contests.map((item, idx) => {
                             return (
-                                <NavLink to={'/contest/'+item._id} className='col-3 border m-3 p-3 text-decoration-none' key={idx}>
+                                <NavLink to={'/contest/'+item._id} className='col-xl-3 col-md-10 border m-xl-3 p-3 text-decoration-none' key={idx}>
                                     <div className='text-uppercase fs-4 pointer'>{item.name}</div>
                                     <br/>
                                     <div className='fs-6'>{item.project}</div>
