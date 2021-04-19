@@ -22,7 +22,7 @@ router.get(
             const {contestId} = req.params
 
             const contest = await models.Contest.findById(contestId)
-            // const prizes = await models.Prize.find({contestId: contest.id})
+            const prizes = await models.Prize.find({contestId: contest.id})
             const infos = await models.Info.find({contestId: contest.id})
 
             const send = {
@@ -31,8 +31,9 @@ router.get(
                 key: ['phone', 'login'],
             }
 
+
             for (const info of infos) {
-                const prize = await models.Prize.findById(info.prizeId)
+                const prize = (prizes.filter((item)=>String(item._id) === String(info.prizeId)))[0]
 
                 switch (info.type) {
                     case 'any':
@@ -50,8 +51,6 @@ router.get(
                         })
                 }
             }
-
-
 
             res.json(send)
         } catch (e) {

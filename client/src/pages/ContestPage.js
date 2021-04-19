@@ -178,11 +178,12 @@ const ContestPage = () => {
                         <div className='row'>
                             {info.infos.map((item, idx) => {
                                 const status = item.status || 'await'
-                                if (item.prizeId !== selectors.prize) return <></>
+                                // if (item.prizeId !== selectors.prize) return <></>
                                 return (
                                     <div className={`col-12 mb-3 border-bottom ${status}`} key={idx}>
                                         <div className='row'>
-                                            <div className='col-xl-10 col-md-12'><ElStatus status={status} /> | {item.type}: {item.data}</div>
+                                            <div className='col-xl-10 col-md-12'><ElStatus status={status} /> {item.type}: {item.data} | prize: {(info.prizes.
+                                            filter((i)=>i._id === item.prizeId))[0].data}</div>
                                             <Button className='col-xl-2 col-md-12' color='secondary'
                                                     onClick={() => delInfo(item._id)}>Удалить</Button>
                                         </div>
