@@ -8,7 +8,7 @@
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
     "client:install": "npm install --prefix client",
-    "client:build": "npm run build --prefix client",
+    "build": "npm run build --prefix client",
     "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
@@ -25,6 +25,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "concurrently": "^6.0.1",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "events": "^3.3.0",

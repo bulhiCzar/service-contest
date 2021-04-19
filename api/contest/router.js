@@ -15,6 +15,49 @@ router.get(
     }
 )
 
+router.get(
+    '/all/:contestId',
+    async (req, res) => {
+        try {
+            const {contestId} = req.params
+
+            const contest = await models.Contest.findById(contestId)
+            // const prizes = await models.Prize.find({contestId: contest.id})
+            const infos = await models.Info.find({contestId: contest.id})
+
+            const send = {
+                phone: [],
+                login: [],
+                key: ['phone', 'login'],
+            }
+
+            for (const info of infos) {
+                const prize = await models.Prize.findById(info.prizeId)
+
+                switch (info.type) {
+                    case 'any':
+                        break;
+                    case 'phone':
+                    case 'login':
+                        send[info.type].push({
+                            typePrize:  prize.type,
+                            amount: prize.amount,
+                            type: info.type,
+                            info: info.data,
+                        })
+                }
+            }
+
+
+
+            res.json(send)
+        } catch (e) {
+            console.log(e)
+            res.json('Ошибка, зовите программиста')
+        }
+    }
+)
+
 router.post(
     '/',
     async (req, res) => {

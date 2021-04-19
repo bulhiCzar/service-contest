@@ -104,15 +104,30 @@ const ContestPage = () => {
     if (!info) return <div className='container text-center'><CircularProgress/></div>
     return (
         <div className='container-xl'>
-            <div className='mb-2 text-center bg-primary p-3 text-white'>
-                {info.project} | {info.name}
+            <div className='mb-2 mt-2 text-center bg-light p-3 text-dark fw-bold'>
+                {info.project} | {info.name} | {info._id}
             </div>
             <div>
                 <form onSubmit={submit}>
                     <div className='row mb-2 mt-4'>
-                        <div className='col-xl-2 col-md-12 '>
-                            <InputLabel id="toPrize">Тип информации</InputLabel>
+                        <div className='col-12 mb-4'>
+                            <InputLabel id="toPrize">Приз</InputLabel>
                             <Select
+                                labelId='toPrize'
+                                className='w-100'
+                                name='prize'
+                                value={selectors.prize}
+                                onChange={handleChange}
+                            >
+                                {info.prizes.map((item, id) => {
+                                    return <MenuItem value={item._id}>{item.data}</MenuItem>
+                                })}
+                            </Select>
+                        </div>
+                        <div className='col-xl-2 col-md-12 mb-4'>
+                            <InputLabel id="toInfo">Тип информации</InputLabel>
+                            <Select
+                                labelId='toInfo'
                                 className='w-100'
                                 name='type'
                                 value={selectors.type}
@@ -142,20 +157,6 @@ const ContestPage = () => {
                     <div className='row mx-auto mb-5 text-danger'>Выберите тип информации и приз</div>
                 }
                 <div className='row'>
-                    <div className='col-12'>
-                        <InputLabel id="toPrize">Приз</InputLabel>
-                        <Select
-                            labelId='toPrize'
-                            className='w-100'
-                            name='prize'
-                            value={selectors.prize}
-                            onChange={handleChange}
-                        >
-                            {info.prizes.map((item, id) => {
-                                return <MenuItem value={item._id}>{item.data}</MenuItem>
-                            })}
-                        </Select>
-                    </div>
                     <div className='col-12 mt-3'>
                         <div className='row'>
                             {info.infos.map((item, idx) => {
