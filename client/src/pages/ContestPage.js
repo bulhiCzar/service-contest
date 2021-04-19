@@ -11,6 +11,10 @@ import parsePhoneNumber from 'libphonenumber-js'
 import Flag from 'react-world-flags'
 import {toast} from "react-toastify";
 
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
+import CachedIcon from '@material-ui/icons/Cached';
+
 
 const ContestPage = () => {
     const {id} = useParams()
@@ -90,7 +94,7 @@ const ContestPage = () => {
     }
 
     const delInfo = async (id) => {
-        const res = await axios.put('/api/contest/' + info._id +'/'+id)
+        const res = await axios.delete('/api/contest/' + info._id +'/'+id)
         if (res.status !== 200){
             toast.error(res.data)
         } else {
@@ -100,6 +104,19 @@ const ContestPage = () => {
             toast('Запись удалена')
         }
     }
+
+    let ElStatus = ({status})=>{
+        switch (status) {
+            case 'await':
+                return <CachedIcon className='awaitFound'/>
+            case 'done':
+                return <DoneIcon className='doneFound'/>
+            case 'not':
+                return <CloseIcon className='notFound'/>
+        }
+
+    }
+
 
     if (!info) return <div className='container text-center'><CircularProgress/></div>
     return (
@@ -160,11 +177,12 @@ const ContestPage = () => {
                     <div className='col-12 mt-3'>
                         <div className='row'>
                             {info.infos.map((item, idx) => {
+                                const status = item.status || 'await'
                                 if (item.prizeId !== selectors.prize) return <></>
                                 return (
-                                    <div className='col-12 mb-3 border-bottom' key={idx}>
+                                    <div className={`col-12 mb-3 border-bottom ${status}`} key={idx}>
                                         <div className='row'>
-                                            <div className='col-xl-10 col-md-12'>{item.type}: {item.data}</div>
+                                            <div className='col-xl-10 col-md-12'><ElStatus status={status} /> | {item.type}: {item.data}</div>
                                             <Button className='col-xl-2 col-md-12' color='secondary'
                                                     onClick={() => delInfo(item._id)}>Удалить</Button>
                                         </div>

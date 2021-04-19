@@ -11,3 +11,13 @@
 .pointer{
   cursor: pointer;
 }
+
+.doneFound{
+  background-color: #4cd964;
+}
+.notFound{
+  background-color: #ff2d55;
+}
+.awaitFound{
+  background-color: #f1c40f;
+}

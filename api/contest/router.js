@@ -40,10 +40,13 @@ router.get(
                     case 'phone':
                     case 'login':
                         send[info.type].push({
+                            contestId: info.contestId,
+                            infoId: info._id,
                             typePrize:  prize.type,
                             amount: prize.amount,
                             type: info.type,
                             info: info.data,
+                            status: info.status,
                         })
                 }
             }
@@ -156,13 +159,36 @@ router.post(
     }
 )
 
-router.put(
+router.delete(
     '/:contestId/:infoId',
     async (req, res) => {
         try {
             const {contestId, infoId} = req.params
 
             await models.Info.findByIdAndRemove(infoId)
+
+            res.json('ok')
+        } catch (e) {
+            console.log(e)
+            res.json('Ошибка, зовите программиста')
+        }
+    }
+)
+
+router.put(
+    '/:contestId/:infoId',
+    async (req, res) => {
+        try {
+            const {contestId, infoId} = req.params
+            const { status } = req.body
+
+            const info = await models.Info.findById(infoId)
+            if (!info) throw new Error()
+            console.log(info)
+
+            await models.Info.findByIdAndUpdate(info._id, {
+                status: status
+            })
 
             res.json('ok')
         } catch (e) {
