@@ -25,11 +25,7 @@ router.get(
             const prizes = await models.Prize.find({contestId: contest.id})
             const infos = await models.Info.find({contestId: contest.id})
 
-            const send = {
-                phone: [],
-                login: [],
-                key: ['phone', 'login'],
-            }
+            const send = []
 
 
             for (const info of infos) {
@@ -40,7 +36,7 @@ router.get(
                         break;
                     case 'phone':
                     case 'login':
-                        send[info.type].push({
+                        send.push({
                             contestId: info.contestId,
                             infoId: info._id,
                             typePrize:  prize.type,
