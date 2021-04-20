@@ -176,10 +176,8 @@ router.put(
         try {
             const {contestId, infoId} = req.params
             const { status } = req.body
-
             const info = await models.Info.findById(infoId)
             if (!info) throw new Error()
-            console.log(info)
 
             await models.Info.findByIdAndUpdate(info._id, {
                 status: status
