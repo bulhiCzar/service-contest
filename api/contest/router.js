@@ -6,7 +6,7 @@ router.get(
     '/',
     async (req, res) => {
         try {
-            const data = await models.Contest.find()
+            const data = await models.Contest.find().sort({ _id: -1 })
 
             res.json(data)
         } catch (e) {
@@ -50,7 +50,6 @@ router.get(
 
             res.json(send)
         } catch (e) {
-            console.log(e)
             res.json('Ошибка, зовите программиста')
         }
     }
@@ -106,7 +105,7 @@ router.get(
 
             const prizes = await models.Prize.find({contestId: contest.id})
 
-            const infos = await models.Info.find({contestId: contest.id})
+            const infos = await models.Info.find({contestId: contest.id}).sort({ _id: -1 })
 
             contest.prizes = prizes
             contest.infos = infos
@@ -148,7 +147,6 @@ router.post(
 
             res.json(info)
         } catch (e) {
-            console.log(e)
             res.json('Ошибка, зовите программиста')
         }
     }
@@ -160,11 +158,13 @@ router.delete(
         try {
             const {contestId, infoId} = req.params
 
-            await models.Info.findByIdAndRemove(infoId)
+            const info = await models.Info.findById(infoId)
+            if (info.status === 'done') return res.json('Невозможно удалить')
+
+            await info.delete()
 
             res.json('ok')
         } catch (e) {
-            console.log(e)
             res.json('Ошибка, зовите программиста')
         }
     }
@@ -185,7 +185,6 @@ router.put(
 
             res.json('ok')
         } catch (e) {
-            console.log(e)
             res.json('Ошибка, зовите программиста')
         }
     }

@@ -1,6 +1,7 @@
 const {Router} = require('express')
 const { check, validationResult } = require('express-validator')
-const normalizeUrl = require('normalize-url');
+const normalizeUrl = require('normalize-url')
+const rusToLatin = require('../../utils/rusToLatin')
 
 const router = Router()
 
@@ -30,10 +31,11 @@ router.post(
 
         try {
             const {country, name, typeLink, link} = req.body
+            const normalizeLink = normalizeUrl(link)
 
             const committeeCandidate = await models.Committee.findOne({
                 $or:[
-                    {link},
+                    {link: normalizeLink},
                     {name},
                     {photo: String(name).replace(/ /g, '')},
                 ]
@@ -42,14 +44,11 @@ router.post(
                 return res.status(203).json('Такой пользователь уже существует')
             }
 
-            const normalizeLink = normalizeUrl(link)
-
-
             const committee = new models.Committee({
                 name,
                 link: normalizeLink,
                 typeLink,
-                photo: String(name).replace(/ /g, ''),
+                photo: String(rusToLatin(name)).replace(/ /g, ''),
                 country: String(country).toLowerCase()
             })
 
@@ -57,6 +56,7 @@ router.post(
 
             res.json(committee)
         } catch (e) {
+            console.log(e)
             res.status(203).json('Ошибка, зовите программиста')
         }
     }
