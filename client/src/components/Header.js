@@ -1,4 +1,5 @@
 import {NavLink} from "react-router-dom";
+import Committee from "../pages/Committee";
 
 
 const Header = () => {
@@ -12,6 +13,9 @@ const Header = () => {
                         </NavLink>
                         <NavLink className='nav-link' to='/create' activeClassName='active'>
                             Создать
+                        </NavLink>
+                        <NavLink className='nav-link' to='/committee' activeClassName='active'>
+                            Комитет
                         </NavLink>
                     </ul>
                 </div>

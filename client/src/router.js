@@ -1,7 +1,8 @@
 import {Switch, Route, Redirect } from 'react-router-dom'
-import SelectPage from "./pages/SelectPage";
-import CreatePage from "./pages/CreatePage";
-import ContestPage from "./pages/ContestPage";
+import Select from "./pages/SelectContest";
+import Create from "./pages/CreateContest";
+import Contest from "./pages/Contest";
+import Committee from "./pages/Committee";
 
 
 export const useRotes = ()=>{
@@ -9,13 +10,16 @@ export const useRotes = ()=>{
     return(
         <Switch>
             <Route path='/' exact>
-                <SelectPage/>
+                <Select/>
             </Route>
             <Route path='/create'>
-                <CreatePage/>
+                <Create/>
             </Route>
             <Route path='/contest/:id'>
-                <ContestPage/>
+                <Contest/>
+            </Route>
+            <Route path='/committee'>
+                <Committee/>
             </Route>
 
             <Redirect to='/'/>

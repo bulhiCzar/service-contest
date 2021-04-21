@@ -3,7 +3,7 @@ import axios from "axios";
 import {NavLink} from "react-router-dom";
 
 
-const SelectPage = () => {
+const SelectContest = () => {
     const [contests, setContests] = useState([])
 
     const loadContests = async () => {
@@ -36,4 +36,4 @@ const SelectPage = () => {
     )
 }
 
-export default SelectPage
+export default SelectContest

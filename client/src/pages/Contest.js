@@ -16,7 +16,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import CachedIcon from '@material-ui/icons/Cached';
 
 
-const ContestPage = () => {
+const Contest = () => {
     const {id} = useParams()
     const [info, setInfo] = useState(null)
     const [input, setInput] = useState('')
@@ -198,4 +198,4 @@ const ContestPage = () => {
     )
 }
 
-export default ContestPage
+export default Contest

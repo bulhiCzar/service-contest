@@ -6,7 +6,7 @@ import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
 
 
-const CreatePage = () => {
+const CreateContest = () => {
     const history = useHistory()
     const [inputs, setInputs] = useState({
         name: '', project: '', prize: '',
@@ -64,4 +64,4 @@ const CreatePage = () => {
     )
 }
 
-export default CreatePage
+export default CreateContest
