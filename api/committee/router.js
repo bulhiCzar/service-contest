@@ -1,5 +1,5 @@
 const {Router} = require('express')
-const { check, validationResult } = require('express-validator')
+const { check, validationResult, body } = require('express-validator')
 const normalizeUrl = require('normalize-url')
 const rusToLatin = require('../../utils/rusToLatin')
 
@@ -21,7 +21,9 @@ router.get(
 router.post(
     '/',
     [
-        check('link').isURL()
+        check('link').isURL(),
+        body('name').trim().rtrim(),
+        body('link').trim().rtrim(),
     ],
     async (req, res) => {
         const validation = validationResult(req)
