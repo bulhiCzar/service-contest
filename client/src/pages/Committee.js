@@ -13,7 +13,7 @@ import Modal from "@material-ui/core/Modal";
 const Committee = () => {
     const [committees, setCommittee] = useState([])
     const [modal, setModal] = useState({
-        open: false, body: null
+        open: false, body: null, images: []
     })
 
     const getCommittee = async () => {
@@ -34,23 +34,23 @@ const Committee = () => {
     }, [])
 
     const getCode = async (id) => {
-        // handleModal()
         let body = {}
+        let images = []
         try {
             const res = await axios.get('/api/committee/' + id)
             if (res.status !== 200) {
                 toast.error(res.data)
             } else {
-                body = res.data
+                body = res.data.doc
+                if (res.data.images){
+                    images = res.data.images
+                }
             }
         } catch (e) {
             toast.error('Ошибка!')
         }
-        console.log(body)
-        setModal({...modal, body, open: !modal.open})
 
-        // JSON.stringify(data, undefined, 2);
-
+        setModal({...modal, body, open: !modal.open, images})
     }
 
     const checkCommittee = async (_id, arrayId) => {
@@ -155,6 +155,20 @@ const Committee = () => {
                     <pre>
                         {JSON.stringify(modal.body, undefined, 3)}
                     </pre>
+                    <div className='row'>
+                    {modal.images.length ?
+                        modal.images.map((item)=>{
+                            return(
+                                <div className='col-3'>
+                                    <p>{item.size}</p>
+                                    <img src={item.image} alt={item.size} height={item.height} width={item.width}/>
+                                </div>
+                            )
+                        })
+                        :
+                        <div>Картинок нет</div>
+                    }
+                    </div>
                 </div>
             </Modal>
         </div>

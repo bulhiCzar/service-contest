@@ -14,7 +14,9 @@ const schema = new Schema({
     role: { type: String },
     dataCreate: { type: Date, default: new Date, required: true },
     idCommittee: {type: Number},
-    status: { type: String, default: 'await', required: true }
+    status: { type: String, default: 'await', required: true },
+    imageBig: {type: String},
+    image: {type: String}
 })
 
 

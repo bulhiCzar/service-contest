@@ -14,7 +14,7 @@ import PhotoEditor from "./PhotoEditor";
 
 const AddCommittee = ({setCommittee}) => {
     const [data, setData] = useState({
-        country: '', name: '', typeLink: '', countryObj: null, link: ''
+        country: '', name: '', typeLink: '', countryObj: null, link: '', imageBig: '', image: ''
     })
 
 
@@ -38,6 +38,15 @@ const AddCommittee = ({setCommittee}) => {
     const handlerLink = (e) => {
         setData({...data, link: e.target.value})
     }
+    const handlerAddPhoto = (idImage, options)=>{
+        if ((options.w === 200) && (options.h === 200)) {
+            setData(prev => ({...prev, imageBig: idImage}))
+        }
+
+        if ((options.w === 170) && (options.h === 170)) {
+            setData(prev => ({...prev, image: idImage}))
+        }
+    }
 
 
     const AutocompleteCountry = memo(() => (
@@ -59,6 +68,8 @@ const AddCommittee = ({setCommittee}) => {
             name: data.name,
             typeLink: data.typeLink,
             link: data.link,
+            imageBig: data.imageBig,
+            image: data.image,
         }
 
         try {
@@ -68,6 +79,7 @@ const AddCommittee = ({setCommittee}) => {
             } else {
                 setCommittee(prev => ([res.data, ...prev]))
                 toast('Наблюдатель добавлен')
+                setData({ country: '', name: '', typeLink: '', countryObj: null, link: '', imageBig: '', image: ''})
             }
         } catch (e) {
             toast.error('Ошибка!')
@@ -114,8 +126,13 @@ const AddCommittee = ({setCommittee}) => {
                                label='Сылка' placeholder='Введите...'
                     />
                 </div>
+                <PhotoEditor
+                    className='w-100'
+                    isCustomResize={true}
+                    onLoad={handlerAddPhoto}
+                />
             </div>
-            <div className='row mb-2'>
+            <div className='row mb-2 mt-4'>
                 <div className="col">
                     <Button className='w-100' variant="contained"
                             color='primary' type='submit'
@@ -125,7 +142,6 @@ const AddCommittee = ({setCommittee}) => {
                     </Button>
                 </div>
             </div>
-            <PhotoEditor isCustomResize={false}/>
         </form>
     )
 }

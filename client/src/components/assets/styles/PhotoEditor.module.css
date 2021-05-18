@@ -13,8 +13,8 @@
 }
 
 .canvas{
-    width: 70vw !important;
-    height: 70vh !important;
+    width: 100% !important;
+    min-height: 480px !important;
     object-fit: contain;
     object-position: center;
 }

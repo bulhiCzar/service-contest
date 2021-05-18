@@ -6,12 +6,13 @@ router.post(
     '/',
     async (req, res) => {
         try {
-            const {image, size, type} = req.body
+            const {image, size, height, width} = req.body
 
             const newImage = new models.Image({
                 image,
                 size,
-                type
+                width,
+                height,
             })
 
             await newImage.save()

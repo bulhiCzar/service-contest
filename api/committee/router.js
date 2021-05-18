@@ -32,7 +32,7 @@ router.post(
         }
 
         try {
-            const {country, name, typeLink, link} = req.body
+            const {country, name, typeLink, link, imageBig, image} = req.body
             const normalizeLink = normalizeUrl(link)
 
             const committeeCandidate = await models.Committee.findOne({
@@ -51,7 +51,9 @@ router.post(
                 link: normalizeLink,
                 typeLink,
                 photo: String(rusToLatin(name)).replace(/ /g, ''),
-                country: String(country).toLowerCase()
+                country: String(country).toLowerCase(),
+                imageBig,
+                image,
             })
 
             await committee.save()
@@ -80,7 +82,19 @@ router.get(
                 country: committee.country
             }
 
-            res.json(doc)
+            const images = []
+
+            if (committee.image) {
+                const img = await models.Image.findById(committee.image)
+                images.push(img)
+            }
+
+            if (committee.imageBig) {
+                const img = await models.Image.findById(committee.imageBig)
+                images.push(img)
+            }
+
+            res.json({doc, images})
         } catch (e) {
             res.status(203).json('Ошибка, зовите программиста')
         }

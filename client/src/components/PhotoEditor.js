@@ -7,11 +7,12 @@ import Modal from "@material-ui/core/Modal";
 import cn from 'classnames';
 import axios from "axios";
 import {toast} from "react-toastify";
-import {AddCommitteeContext} from "./AddCommittee";
+import imageCompression from 'browser-image-compression';
 
 
 const PhotoEditor = ({
-                         isCustomResize = false
+                         isCustomResize = false,
+                         onLoad
                      }) => {
 
     const [image, setImage] = useState(null)
@@ -36,11 +37,31 @@ const PhotoEditor = ({
     }
 
     const handleDrop = dropped => {
-        setImage(dropped[0])
+        handlerCompress(dropped[0])
     }
     const handleNewImage = (e) => {
-        setImage(e.target.files[0])
+        handlerCompress(e.target.files[0])
     }
+    const handlerCompress = async (image)=>{
+        const options = {
+            maxSizeMB: 0.01,
+            maxWidthOrHeight: 1920,
+            useWebWorker: false,
+            maxIteration: 30,
+            fileType: "Image",
+        }
+        try {
+            // const compressedFile = await imageCompression(image, options);
+            // console.log(image)
+            // console.log(compressedFile)
+            // const file = new File([compressedFile], image.name);
+            setImage(image)
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
     const handlePositionChange = (position) => {
         setState(prev => ({...prev, position}))
     }
@@ -69,32 +90,21 @@ const PhotoEditor = ({
         setState(prev => ({...prev, isSquare}))
     }
     const handleSave = async () => {
-        const sendArr = []
-        const img200 = editorRef.getImageScaledToCanvas().toDataURL()
-        sendArr.push({
-            size: '200x200',
-            type: 'big',
-            image: img200
-        })
-
-        setState(prev => ({...prev, width: 170, height: 170}))
-
-        const img170 = editorRef.getImageScaledToCanvas().toDataURL()
-        sendArr.push({
-            size: '170x170',
-            type: 'main',
-            image: img170
-        })
+        const image = editorRef.getImageScaledToCanvas().toDataURL()
+        const send = {
+            image,
+            size: `${state.width}x${state.height}`,
+            width: state.width,
+            height: state.height,
+        }
         try {
-            for (const send of sendArr) {
-                const res = await axios.post('/api/image', send)
-                if (res.status !== 200) {
-                    toast.error(res.data)
-                } else {
-                    // setCommittee(prev => ([res.data, ...prev]))
-                }
+            const res = await axios.post('/api/image', send)
+            if (res.status !== 200) {
+                toast.error(res.data)
+            } else {
+                onLoad(res.data, {w: state.width, h: state.height})
+                toast('Фото добавлено')
             }
-            toast('Фото добавлено')
         } catch (e) {
             toast.error('Ошибка загрузки фото')
         }
@@ -207,7 +217,7 @@ const PhotoEditorButton = (props) => {
 
     return (
         <>
-            <Button variant="contained" color="secondary" onClick={handlerModal}>
+            <Button variant="contained" color="primary" onClick={handlerModal}>
                 Добавить фото
             </Button>
             <Modal
@@ -216,6 +226,7 @@ const PhotoEditorButton = (props) => {
             >
                 <PhotoEditor
                     isCustomResize={props.isCustomResize}
+                    onLoad={props.onLoad}
                 />
             </Modal>
         </>
