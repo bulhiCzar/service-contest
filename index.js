@@ -11,7 +11,8 @@ const PORT = process.env.PORT || 4000
 
 const app = express()
 
-app.use(bodyParser.json())
+
+app.use(bodyParser.json({limit: '50mb', extended: true}))
 app.use(cors())
 
 app.use('/api', require('./api/router'))
@@ -34,7 +35,8 @@ async function startBD() {
             Contest: require('./models/Contest'),
             Info: require('./models/Info'),
             Prize: require('./models/Prize'),
-            Committee: require('./models/Committee')
+            Committee: require('./models/Committee'),
+            Image: require('./models/Image'),
         }
 
 

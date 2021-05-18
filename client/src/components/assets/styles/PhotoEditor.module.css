@@ -1,0 +1,20 @@
+.wrapper{
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 30px
+}
+.inputTwo{
+    max-width: 320px;
+    width: 100%;
+}
+.inputTwo > * {
+    width: 50%;
+}
+
+.canvas{
+    width: 70vw !important;
+    height: 70vh !important;
+    object-fit: contain;
+    object-position: center;
+}
