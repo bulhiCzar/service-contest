@@ -122,6 +122,7 @@ const AddCommittee = ({setCommittee}) => {
                         <MenuItem value='vk'>Вконтакте</MenuItem>
                         <MenuItem value='te'>Телеграм</MenuItem>
                         <MenuItem value='lin'>Linkedin</MenuItem>
+                        <MenuItem value='wechat'>WeChat</MenuItem>
                     </Select>
                 </div>
                 <div className='col-xl-9'>
